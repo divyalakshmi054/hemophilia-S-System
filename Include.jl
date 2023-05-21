@@ -12,6 +12,7 @@ using Optim
 using Colors
 using JLD2
 using BSTModelKit
+using Interpolations
 
 # paths -
 _PATH_TO_MODEL = joinpath(pwd(),"model")
