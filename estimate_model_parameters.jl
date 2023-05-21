@@ -52,7 +52,6 @@ function objective_function(parameter_guess_array,model,exp_df)
 
    # solve -
    (T,U) = evaluate(model,tspan=(0.0,120.0))
-   FIIa = U[:,9]
 
    # compute simulation error -
    t = exp_df[:,:Time]
@@ -140,6 +139,8 @@ function learn_routine(i,model,visit_df,exp_df; pₒ::Union{Nothing,Array{Float6
     inner_optimizer = NelderMead() 
     options = Optim.Options(time_limit = 600, show_trace = true, show_every = 10, iterations = 100)
     result = optimize(OF, parameter_guess_array[:,2],parameter_guess_array[:,3],parameter_guess_array[:,1],Fminbox(inner_optimizer),options)
+
+    return result;
 end
 
 # load exp data & model -
