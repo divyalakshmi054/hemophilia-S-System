@@ -13,23 +13,23 @@ training_df = CSV.read(data_file,DataFrame)
 
 # which visit?
 visit = 4;
-fVIIa = 75;
-prothrombin = 100;
+fVIIa = 25;
+prothrombin = 50;
 
 visit_df = filter(:Visit => x->(x==visit), training_df)
 
 # size of training set -
 (R,C) = size(visit_df)
 
+# load PSET -
+pset_name = "PSET-Actual-25-100-P6.csv"      # trained
+path_to_parameters = joinpath(pwd(),"actual_ensemble_s_system",pset_name)
+parameter_df = CSV.read(path_to_parameters,DataFrame)
+p_use = parameter_df[2:end,:parameters] # first is the error
+
 # main simulation -
 SF = 1e9
 for i ∈ 1:R
-
-    # load PSET -
-    pset_name = "PSET-Actual-50-100-P$(i).csv"      # trained
-    path_to_parameters = joinpath(pwd(),"actual_ensemble_s_system",pset_name)
-    parameter_df = CSV.read(path_to_parameters,DataFrame)
-    p_use = parameter_df[2:end,:parameters] # first is the error
 
     # build new model -
     dd = deepcopy(model)
@@ -44,7 +44,7 @@ for i ∈ 1:R
     # grab the multiplier from the data -
     ℳ = dd.number_of_dynamic_states
     xₒ = zeros(ℳ)
-    xₒ[1] = visit_df[i, :II]         # 1 FII 
+    xₒ[1] = 0.5*visit_df[i, :II]         # 1 FII 
     xₒ[2] = visit_df[i, :VII]        # 2 FVII 
     xₒ[3] = visit_df[i, :V]          # 3 FV
     xₒ[4] = visit_df[i, :X]          # 4 FX
@@ -53,7 +53,7 @@ for i ∈ 1:R
     xₒ[7] = visit_df[i, :XI]         # 7 FXI
     xₒ[8] = visit_df[i, :XII]        # 8 FXII 
     xₒ[9] = (1e-14)*SF               # 9 FIIa
-    xₒ[10] = 75.0                    # 10 FVIIa
+    xₒ[10] = 25.0                    # 10 FVIIa
     xₒ[19] = visit_df[i, :PLT]       # 19 PL
     dd.initial_condition_array = xₒ
 
