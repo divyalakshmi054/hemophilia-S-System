@@ -98,7 +98,7 @@ function learn_routine(i,model,visit_df,exp_df; pₒ::Union{Nothing,Array{Float6
     xₒ[7] = visit_df[i, :XI]         # 7 FXI
     xₒ[8] = visit_df[i, :XII]        # 8 FXII 
     xₒ[9] = (1e-14)*SF               # 9 FIIa
-    # xₒ[10] = 75.0                  # 10 FVIIa --- CHANGE THIS FOR DIFFERENT CONDITIONS
+    xₒ[10] = 25.0                    # 10 FVIIa --- CHANGE THIS FOR DIFFERENT CONDITIONS
     xₒ[19] = visit_df[i, :PLT]       # 19 PL
     model.initial_condition_array = xₒ
 
@@ -144,7 +144,7 @@ function learn_routine(i,model,visit_df,exp_df; pₒ::Union{Nothing,Array{Float6
 end
 
 # load exp data & model -
-exp_df = CSV.read(joinpath(_PATH_TO_DATA,"thrombin-hemophilia-exp.csv"),DataFrame)
+exp_df = CSV.read(joinpath(_PATH_TO_DATA,"thrombin-hemophilia-fVIIa-25-nM-100-fII.csv"),DataFrame)
 model_file = joinpath(_PATH_TO_MODEL,"Feedback.bst")
 
 # build the model -
@@ -166,7 +166,7 @@ p_previous = nothing;
 number_of_parameters = 22;
 ensemble_archive = zeros(number_of_parameters+1)
 
-for i ∈ 1:2
+for i ∈ 3:R
     result = learn_routine(i,model,visit_df,exp_df; pₒ=nothing)
     p_best = Optim.minimizer(result)
 
@@ -230,12 +230,12 @@ for i ∈ 1:2
    (T,U) = evaluate(model,tspan=(0.0,120.0))
 
    # dump p_best to disk -
-   CSV.write(joinpath(_PATH_TO_ACTUAL_ENSEMBLE,"PSET-Actual-P$(i).csv"),Tables.table(ensemble_archive),header = ["parameters"])
+   CSV.write(joinpath(_PATH_TO_ACTUAL_ENSEMBLE,"PSET-Actual-25-100-P$(i).csv"),Tables.table(ensemble_archive),header = ["parameters"]) # 50 rFVIIa 100% fII
 
    # dump SIM to disk -
    data = [T U]
 
-    path_to_sim_data = joinpath(_PATH_TO_ACTUAL_ENSEMBLE, "SIM-Hemophilia-$(i).csv")
+    path_to_sim_data = joinpath(_PATH_TO_ACTUAL_ENSEMBLE, "SIM-Hemophilia-25-100-$(i).csv")
     CSV.write(path_to_sim_data, Tables.table(hcat(data),header=vcat("Time",model.list_of_dynamic_species)))
 
     global p_previous = nothing;

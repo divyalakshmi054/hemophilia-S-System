@@ -45,7 +45,7 @@ for i ∈ 1:R
     xₒ[7] = visit_df[i, :XI]           # 7 FXI
     xₒ[8] = visit_df[i, :XII]          # 8 FXII 
     xₒ[9] = (1e-14)*SF                 # 9 FIIa
-    xₒ[10] = 75.0                     # 10 FVIIa
+    xₒ[10] = 50                        # 10 FVIIa
     xₒ[19] = visit_df[i, :PLT]         # 19 PL
     dd.initial_condition_array = xₒ
 

@@ -19,6 +19,7 @@ _PATH_TO_MODEL = joinpath(pwd(),"model")
 _PATH_TO_DATA = joinpath(pwd(),"data")
 _PATH_TO_TMP = joinpath(pwd(),"tmp")
 _PATH_TO_ACTUAL_ENSEMBLE = joinpath(pwd(),"actual_ensemble_s_system")
+_PATH_TO_TMP_CONSTRUCTION = joinpath(pwd(),"tmp_validation")
 
 # code -
 include("src/Compute.jl")
