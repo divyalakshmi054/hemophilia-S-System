@@ -22,7 +22,7 @@ visit_df = filter(:Visit => x->(x==visit), training_df)
 (R,C) = size(visit_df)
 
 # load PSET -
-pset_name = "PSET-Actual-25-100-P6.csv"      # trained
+pset_name = "PSET-Actual-P6.csv"      # trained
 path_to_parameters = joinpath(pwd(),"actual_ensemble_s_system",pset_name)
 parameter_df = CSV.read(path_to_parameters,DataFrame)
 p_use = parameter_df[2:end,:parameters] # first is the error
@@ -44,7 +44,7 @@ for i ∈ 1:R
     # grab the multiplier from the data -
     ℳ = dd.number_of_dynamic_states
     xₒ = zeros(ℳ)
-    xₒ[1] = 0.5*visit_df[i, :II]         # 1 FII 
+    xₒ[1] = visit_df[i, :II]         # 1 FII 
     xₒ[2] = visit_df[i, :VII]        # 2 FVII 
     xₒ[3] = visit_df[i, :V]          # 3 FV
     xₒ[4] = visit_df[i, :X]          # 4 FX
@@ -53,7 +53,7 @@ for i ∈ 1:R
     xₒ[7] = visit_df[i, :XI]         # 7 FXI
     xₒ[8] = visit_df[i, :XII]        # 8 FXII 
     xₒ[9] = (1e-14)*SF               # 9 FIIa
-    xₒ[10] = 25.0                    # 10 FVIIa
+    # xₒ[10] = 25.0                    # 10 FVIIa
     xₒ[19] = visit_df[i, :PLT]       # 19 PL
     dd.initial_condition_array = xₒ
 
@@ -115,7 +115,7 @@ for i ∈ 1:R
     global (T,U) = evaluate(dd,tspan=(0.0,120.0))
     data = [T U]
 
-    path_to_sim_data = joinpath(_PATH_TO_TMP_CONSTRUCTION, "SIM-Hemophilia-$(fVIIa)-$(prothrombin)-$(i).csv")
+    path_to_sim_data = joinpath(_PATH_TO_TMP_CONSTRUCTION, "SIM-Hemophilia-$(i).csv")
     CSV.write(path_to_sim_data, Tables.table(hcat(data),header=vcat("Time",dd.list_of_dynamic_species)))
 
     # make plots -

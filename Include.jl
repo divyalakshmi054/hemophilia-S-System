@@ -13,6 +13,7 @@ using Colors
 using JLD2
 using BSTModelKit
 using Interpolations
+using QuasiMonteCarlo
 
 # paths -
 _PATH_TO_MODEL = joinpath(pwd(),"model")
