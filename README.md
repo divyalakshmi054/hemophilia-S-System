@@ -6,8 +6,8 @@ To estimate parameters by reducing differences: Specify FVIIa and FII levels in 
 
 To use estimated parameters to generate other cases: Pick a PSET, and change FVIIa and FII levels in `construction.jl`. Then,  `include("construction.jl")`. This file has a plotting routine to generate FIIa v. Time *for each patient* and store to `figs` in pwd.
 
-To generate average plots for N patients: Open the appropriate experimental data file and in a loop running from 1 to N, open simulation file(s) in `plot_thrombin.jl` to compute mean and standard error. Then, `include("plot_thrombin.j")`
+To generate average plots for N patients: Open the appropriate experimental data file and in a loop running from 1 to N, open simulation file(s) in `plot_thrombin.jl` to compute mean and standard error. Then, `include("plot_thrombin.jl")`
 
-To run Morris sensitivity analysis: Edit number of samples in gsa method in `sensitivity.jl`, then `include("sensitivity.jl")
+To run Morris sensitivity analysis: Edit number of samples in gsa method in `sensitivity.jl`, then `include("sensitivity.jl")`
 
 To plot Sobol indices: `include("plot_sensitivity.jl")`; you may need to update the CSV filename or the path to file containing the Morris results
