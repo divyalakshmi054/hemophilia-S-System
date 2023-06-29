@@ -2,7 +2,7 @@
 
 To run simulations: Keep visit number = 4 in `sample_ensemble.jl`, then `include("sample_ensemble.jl")`
 
-To estimate parameters by reducing differences: Specify FVIIa and FII levels in the learn_routine() function in `estimate_model_parameters.jl`, then change p_best dump and SIM data dump filenames. Finally, run `include("estimate_model_parameters.jl")`
+To estimate parameters by reducing differences: Specify FVIIa and FII levels in the learn_routine() function in `estimate_model_parameters.jl`, then change p_best dump and SIM data dump filenames to include info about FVIIa added and FII percentage. Finally, run `include("estimate_model_parameters.jl")`
 
 To use estimated parameters to generate other cases: Pick a PSET, and change FVIIa and FII levels in `construction.jl`. Then,  `include("construction.jl")`. This file has a plotting routine to generate FIIa v. Time *for each patient* and store to `figs` in pwd.
 
