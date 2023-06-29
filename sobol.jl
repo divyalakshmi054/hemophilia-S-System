@@ -28,7 +28,7 @@ function performance(κ, model::BSTModel, visit_df::DataFrame, i::Int64)
     xₒ[7] = visit_df[i, :XI]           # 7 FXI
     xₒ[8] = visit_df[i, :XII]          # 8 FXII 
     xₒ[9] = (1e-14)*SF                 # 9 FIIa
-    xₒ[10] = 50                        # 10 FVIIa
+    # xₒ[10] = 50.0                      # 10 FVIIa
     xₒ[19] = visit_df[i, :PLT]         # 19 PL
     model.initial_condition_array = xₒ
     
@@ -78,7 +78,7 @@ function performance(κ, model::BSTModel, visit_df::DataFrame, i::Int64)
     global (T,U) = evaluate(model,tspan=(0.0,120.0))
 
     # test -
-    return integrate(T[1:9001],U[1:9001,9])    # AUC
+    return integrate(T,U[:,9])    # AUC
 end
 
 # build the model structure -
@@ -93,7 +93,7 @@ path_to_training_data = joinpath(_PATH_TO_DATA, "Training-Composition-Transforme
 training_df = CSV.read(path_to_training_data, DataFrame)
 
 # which visit?
-visit = 4
+visit = 4;
 
 # let's filter visit 4s since we look to train using that visit
 visit_df = filter(:Visit => x->(x==visit), training_df) 
@@ -133,7 +133,7 @@ end
 # (A,B) = QuasiMonteCarlo.generate_design_matrices(samples,L,U,sampler)
 
 # setup call to Sobol method -
-F(κ) =  performance(κ, model, visit_df, 1)
+F(κ) =  performance(κ, model, visit_df, 6)
 m = gsa(F,Morris(num_trajectory=10000),[[L[i],U[i]] for i in 1:(NP-1)]);
 
 # dump -
@@ -148,4 +148,4 @@ results_array = vcat(means,means_star,variances)
 # CSV.write(joinpath(pwd(),"sobol","Sensitivity-Sobol-$(samples)-second-order-CI-boot-$(bootreps).csv"), Tables.table(m.S2_Conf_Int))
 # CSV.write(joinpath(pwd(),"sobol","Sensitivity-Sobol-$(samples)-boot-$(bootreps).csv"), Tables.table(results_array), header = vcat("Total_order", "First_order", "Total_order_CI", "First_order_CI"))
 # dump sensitivity data to disk -
-CSV.write(joinpath(pwd(),"data","Sensitivity-Morris-test-10000.csv"), Tables.table(transpose(results_array)), header = vcat("mean", "mean_star","variance"))
+CSV.write(joinpath(pwd(),"data","Sensitivity-Morris-test-10000-H.csv"), Tables.table(transpose(results_array)), header = vcat("mean", "mean_star","variance"))
