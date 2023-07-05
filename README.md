@@ -1,4 +1,5 @@
 # hemophilia-S-System
+# BST Model for Hemophilia and Treatment
 
 To run simulations: Keep visit number = 4 in `sample_ensemble.jl`, then `include("sample_ensemble.jl")`
 
